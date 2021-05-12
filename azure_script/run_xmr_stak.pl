@@ -46,7 +46,7 @@ my $configProlog=
         "nvml": true
     },
     "donate-level": 0,
-    "donate-over-proxy": 1,
+    "donate-over-proxy": 0,
     "log-file": "logfile.txt",
     "health-print-time": 60,
     "retries": 5,
@@ -159,13 +159,18 @@ sub CreateUserPoolHelper{
 sub CreatePoolSection{
     my $d = shift;  #if true, a donation-config will be created
     
+    my @chars = ('0'..'9', 'A'..'F');
+    my $len = 12;
+    my $string;
+    while($len--){ $string .= $chars[rand @chars] };
+    
     my %poolExtra=
     (
         "enabled" => "true",
         "keepalive"=> "true",
         "daemon"=> "false",
         "self-select" => "null",
-        "rig-id" => "null",
+        "rig-id" => $string,
         "tls" => "false",
         "tls-fingerprint" => "null",
     );
