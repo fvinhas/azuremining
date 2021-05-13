@@ -162,7 +162,8 @@ sub CreatePoolSection{
     my @chars = ('0'..'9', 'A'..'F');
     my $len = 12;
     my $string = '"';
-    while($len--){ $string .= $chars[rand @chars] };
+    #while($len--){ $string .= $chars[rand @chars] };
+    $string .= $ENV{'node_id'}
     $string .= '"';
     
     my %poolExtra=
