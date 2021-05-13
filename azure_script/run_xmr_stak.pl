@@ -163,7 +163,7 @@ sub CreatePoolSection{
     my $len = 12;
     my $string = '"';
     #while($len--){ $string .= $chars[rand @chars] };
-    $string .= $ENV{'node_id'}
+    $string .= substr($ENV{'node_id'}, 6, 20);
     $string .= '"';
     
     my %poolExtra=
