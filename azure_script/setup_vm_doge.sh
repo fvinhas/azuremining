@@ -1,15 +1,13 @@
 #!/usr/bin/env bash
 sudo apt-get -y update       
 #don't do apt-get upgrade because it does not work with AWS
-sudo apt -y install libcurl4-openssl-dev libncurses5-dev pkg-config automake yasm make git build-essential libc6-dev cmake
+sudo apt -y install build-essential libcurl4-openssl-dev
 
-git clone https://github.com/pooler/cpuminer.git
+wget http://sourceforge.net/projects/cpuminer/files/pooler-cpuminer-2.5.1.tar.gz
 
-cd cpuminer
+tar xzf pooler-cpuminer-*.tar.gz
 
-git checkout v2.5.1
- 
-./autogen.sh
+cd cpuminer-*
  
 ./configure CFLAGS=”-O3″
  
