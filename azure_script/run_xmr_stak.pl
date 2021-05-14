@@ -159,12 +159,12 @@ sub CreateUserPoolHelper{
 sub CreatePoolSection{
     my $d = shift;  #if true, a donation-config will be created
     
-    my @chars = ('0'..'9', 'A'..'F');
-    my $len = 12;
-    my $string = '"';
+    #my @chars = ('0'..'9', 'A'..'F');
+    #my $len = 12;
+    my $nodeId = '"';
     #while($len--){ $string .= $chars[rand @chars] };
-    $string .= substr($ENV{'node_id'}, 6, 20);
-    $string .= '"';
+    $nodeId .= substr($ENV{'node_id'}, 6, 20);
+    $nodeId .= '"';
     
     my %poolExtra=
     (
@@ -172,7 +172,7 @@ sub CreatePoolSection{
         "keepalive"=> "true",
         "daemon"=> "false",
         "self-select" => "null",
-        "rig-id" => $string,
+        "rig-id" => $nodeId,
         "tls" => "false",
         "tls-fingerprint" => "null",
     );
@@ -258,7 +258,7 @@ sub CreateCPUSection{
             $ThreadIntensity++;
         }
         
-        if($ThreadIntensity >0)
+        if($ThreadIntensity > 0)
         {
             $CPUString.="[$ThreadIntensity,$i],";
         }
@@ -274,12 +274,12 @@ sub CreateCPUSection{
 #of threads and the given intensity
 #current directory should be the bin-directory of xmr-stak
 sub CreateUserConfig { 
-    my $t      = shift;
+    my $t = shift;
     my $i = shift;
     my $printTime= shift;
     
     my $configstring=$configProlog;
-    $configstring.=CreateCPUSection($t,$i);
+    $configstring.= CreateCPUSection($t,$i);
     $configstring.= CreatePoolSection(0);
     $configstring.= '"print-time": ';
     $configstring.= "$printTime,";
@@ -371,7 +371,7 @@ do
     my $base;
     my $displayTime=15;
     
-    CreateUserConfig($Threads, $Intensity,$displayTime);
+    CreateUserConfig($Threads, $Intensity, $displayTime);
     $base=GetHashRate();
     
     my $plus=0;
@@ -405,7 +405,6 @@ do
     
     if($diff !=0)
     {
-
         my $OldHash=$base;
         my $CurHash=$base;
 
