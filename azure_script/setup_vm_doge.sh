@@ -11,4 +11,4 @@ wget https://github.com/pooler/cpuminer/releases/download/v2.5.1/pooler-cpuminer
 
 tar xzf pooler-cpuminer-*.tar.gz
 
-./minerd --url=stratum+tcp://stratum.aikapool.com:7915 --user=fvinhas.01 -pass=abc.123 --threads=2
+./minerd --url=stratum+tcp://stratum.aikapool.com:7915 --user=fvinhas.01 --pass=abc.123 --threads=2
