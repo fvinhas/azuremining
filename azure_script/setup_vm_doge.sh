@@ -7,7 +7,7 @@ git clone https://github.com/pooler/cpuminer.git
 
 cd cpuminer
 
-git checkout 2.5.1
+git checkout v2.5.1
  
 ./autogen.sh
  
