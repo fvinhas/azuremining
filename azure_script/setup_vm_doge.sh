@@ -12,10 +12,3 @@ cd cpuminer-*
 ./configure CFLAGS="-O3"
 
 make
-
-
-
-
-
-
-
