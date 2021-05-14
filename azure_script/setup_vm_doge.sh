@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 sudo apt-get -y update       
 #don't do apt-get upgrade because it does not work with AWS
-sudo apt -y install libcurl4-openssl-dev libncurses5-dev pkg-config automake yasm make git build-essential
+sudo apt -y install libcurl4-openssl-dev libncurses5-dev pkg-config automake yasm make git build-essential libc6-dev cmake
 
 git clone https://github.com/pooler/cpuminer.git
 
