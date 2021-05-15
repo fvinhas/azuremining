@@ -65,7 +65,7 @@ sub GetUserCurrency{
         "graft" => '"cn/rwz"',
         "masari" => '"cn/half"',
         "ryo" => '"cn/gpu"',
-        "turtlecoin" => '"argon2/chukwa"',
+        "turtlecoin" => '"argon2/chukwav2"',
         "bittube" => '"cn-heavy/tube"',
         "bbscoin" => '"cn-lite/1"',
         "intense" => '"cn/r"',
