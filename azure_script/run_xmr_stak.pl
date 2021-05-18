@@ -248,26 +248,26 @@ sub CreateCPUSection{
         "*": [
     ';
     
-    #my $BaseIntensity = int($i/$t);
-    #my $ExtraIntensity = $i % $t;
+    my $BaseIntensity = int($i/$t);
+    my $ExtraIntensity = $i % $t;
     
-    #for (my $i=0; $i < $t; $i++) 
-    #{
-    #    my $ThreadIntensity=$BaseIntensity;
+    for (my $i=0; $i < $t; $i++) 
+    {
+        my $ThreadIntensity=$BaseIntensity;
         
-    #    if ($ExtraIntensity > $i)
-    #    {
-    #        $ThreadIntensity++;
-    #    }
+        if ($ExtraIntensity > $i)
+        {
+            $ThreadIntensity++;
+        }
         
-    #    if($ThreadIntensity > 0)
-    #    {
-    #        $CPUString.="[$ThreadIntensity,$i],";
-    #    }
-    #}
+        if($ThreadIntensity > 0)
+        {
+            $CPUString.="[$ThreadIntensity,$i],";
+        }
+    }
     
-    $CPUString.="[1, 0],";
-    $CPUString.="[1, 1]";
+    #$CPUString.="[1, 0],";
+    #$CPUString.="[1, 1]";
     
     $CPUString.="],
     },";
