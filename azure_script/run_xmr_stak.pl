@@ -159,12 +159,14 @@ sub CreateUserPoolHelper{
 sub CreatePoolSection{
     my $d = shift;  #if true, a donation-config will be created
     
-    #my @chars = ('0'..'9', 'A'..'F');
-    #my $len = 12;
-    my $nodeId = '"';
-    #while($len--){ $string .= $chars[rand @chars] };
-    $nodeId .= substr($ENV{'node_id'}, 6, 20);
-    $nodeId .= '"';
+    my $nodeId = '"null"';
+    
+    if(exists $ENV{'node_id'})
+    {
+        $nodeId = '"';
+        $nodeId .= substr($ENV{'node_id'}, 6, 20);
+        $nodeId .= '"';    
+    }
     
     my %poolExtra=
     (
@@ -246,23 +248,26 @@ sub CreateCPUSection{
         "*": [
     ';
     
-    my $BaseIntensity = int($i/$t);
-    my $ExtraIntensity = $i % $t;
+    #my $BaseIntensity = int($i/$t);
+    #my $ExtraIntensity = $i % $t;
     
-    for (my $i=0; $i < $t; $i++) 
-    {
-        my $ThreadIntensity=$BaseIntensity;
+    #for (my $i=0; $i < $t; $i++) 
+    #{
+    #    my $ThreadIntensity=$BaseIntensity;
         
-        if ($ExtraIntensity > $i)
-        {
-            $ThreadIntensity++;
-        }
+    #    if ($ExtraIntensity > $i)
+    #    {
+    #        $ThreadIntensity++;
+    #    }
         
-        if($ThreadIntensity > 0)
-        {
-            $CPUString.="[$ThreadIntensity,$i],";
-        }
-    }
+    #    if($ThreadIntensity > 0)
+    #    {
+    #        $CPUString.="[$ThreadIntensity,$i],";
+    #    }
+    #}
+    
+    $CPUString.="[1, 0],";
+    $CPUString.="[1, 1]";
     
     $CPUString.="],
     },";
