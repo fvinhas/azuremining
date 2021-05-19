@@ -306,11 +306,6 @@ sub CreateCCSection{
 
     $CCString .= HashToJson(%CCExtra);
     
-    $CCString .= 
-    '
-    ,
-    ';
-    
     return ($CCString);
 }
 
