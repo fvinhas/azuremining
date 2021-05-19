@@ -223,7 +223,7 @@ sub CreatePoolSection{
     $PoolString.=
     '
         ],
-    
+   
     ';    
 }
 
@@ -288,19 +288,29 @@ sub CreateCCSection{
     $url .= $ENV{'cc'};
     $url .= '"';
 
-    my $CCString=
+    my %CCExtra=
+    (
+        "enabled" => "true",
+        "use-tls"=> "false",
+        "use-remote-logging"=> "true",
+        "upload-config-on-start" => "false",
+        "url" => $url,
+        "access-token" => "#abc.123",
+        "worker-id" => $nodeId,
+        "reboot-cmd" => "null",
+        "update-interval-s" => "10",
+    );
+
+    my $CCString =
+    '"cc-client": 
+        
+    ';
+
+    $CCString .= HashToJson(%CCExtra);
+    
+    $CCString .= 
     '
-    "cc-client": {
-        "enabled": true,
-        "use-tls": false,
-        "use-remote-logging": true,
-        "upload-config-on-start": false,
-        "url": $url,
-        "access-token": "#abc.123",
-        "worker-id": $node_id,
-        "reboot-cmd": null,
-        "update-interval-s": 10
-    },
+    ,
     ';
     
     return ($CCString);
