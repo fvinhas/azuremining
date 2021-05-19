@@ -285,8 +285,8 @@ sub CreateCCSection{
     }
 
     my $url = '"';
-    url .= $ENV{'cc'};
-    url .= '"';
+    $url .= $ENV{'cc'};
+    $url .= '"';
 
     my $CCString=
     '
