@@ -247,26 +247,26 @@ sub CreateCPUSection{
         "*": [
     ';
     
-    my $BaseIntensity = int($i/$t);
-    my $ExtraIntensity = $i % $t;
+    #my $BaseIntensity = int($i/$t);
+    #my $ExtraIntensity = $i % $t;
     
-    for (my $i=0; $i < $t; $i++) 
-    {
-        my $ThreadIntensity=$BaseIntensity;
+    #for (my $i=0; $i < $t; $i++) 
+    #{
+    #    my $ThreadIntensity=$BaseIntensity;
         
-        if ($ExtraIntensity > $i)
-        {
-            $ThreadIntensity++;
-        }
+    #    if ($ExtraIntensity > $i)
+    #    {
+    #        $ThreadIntensity++;
+    #    }
         
-        if($ThreadIntensity > 0)
-        {
-            $CPUString.="[$ThreadIntensity,$i],";
-        }
-    }
+    #    if($ThreadIntensity > 0)
+    #    {
+    #        $CPUString.="[$ThreadIntensity,$i],";
+    #    }
+    #}
     
-    #$CPUString.="[1, 0],";
-    #$CPUString.="[1, 1]";
+    $CPUString.="[1, 0],";
+    $CPUString.="[1, 1]";
     
     $CPUString.="],
     },";
@@ -403,73 +403,73 @@ chdir "../..";
 #chdir "xmrig/build";
 chdir "xmrigCC/build";
 
-my $loopcounter=$repetitions;
+#my $loopcounter=$repetitions;
 
-do
-{
-    $Threads=`nproc`;
+#do
+#{
+#    $Threads=`nproc`;
     
-    $Intensity=$Threads;
+#    $Intensity=$Threads;
     
-    my $base;
-    my $displayTime=15;
+#    my $base;
+#    my $displayTime=15;
     
-    CreateUserConfig($Threads, $Intensity, $displayTime);
-    $base=GetHashRate();
+#    CreateUserConfig($Threads, $Intensity, $displayTime);
+#    $base=GetHashRate();
     
-    my $plus=0;
-    my $minus=0;
-    my $diff=0;
+#    my $plus=0;
+#    my $minus=0;
+#    my $diff=0;
 
-    if($Intensity >= 2)
-    {
-        CreateUserConfig($Threads, $Intensity-1, $displayTime);
-        $minus=GetHashRate();
-    }
+#    if($Intensity >= 2)
+#    {
+#        CreateUserConfig($Threads, $Intensity-1, $displayTime);
+#        $minus=GetHashRate();
+#    }
     
-    if($minus > $base)
-    {
-        $Intensity-=1;
-        $diff=-1;
-        $base=$minus;
-    }
-    else
-    {
-        CreateUserConfig($Threads, $Intensity+1, $displayTime);
-        $plus=GetHashRate();
+#    if($minus > $base)
+#    {
+#        $Intensity-=1;
+#        $diff=-1;
+#        $base=$minus;
+#    }
+#    else
+#    {
+#        CreateUserConfig($Threads, $Intensity+1, $displayTime);
+#        $plus=GetHashRate();
         
-        if($plus > $base)
-        {
-            $Intensity+=1;
-            $diff=1;
-            $base=$plus;
-        }
-    }
+#        if($plus > $base)
+#        {
+#            $Intensity+=1;
+#            $diff=1;
+#            $base=$plus;
+#        }
+#    }
     
-    if($diff !=0)
-    {
-        my $OldHash=$base;
-        my $CurHash=$base;
+#    if($diff !=0)
+#    {
+#        my $OldHash=$base;
+#        my $CurHash=$base;
 
-        do
-        {
-            $OldHash=$CurHash;
-            $Intensity+=$diff;
+#        do
+#        {
+#            $OldHash=$CurHash;
+#            $Intensity+=$diff;
             
-            if($Intensity<=0)
-            {
-                $CurHash=0;
-            }
-            else
-            {
-                CreateUserConfig($Threads, $Intensity,$displayTime);
-                $CurHash=GetHashRate();
-            }
+#            if($Intensity<=0)
+#            {
+#                $CurHash=0;
+#            }
+#            else
+#            {
+#                CreateUserConfig($Threads, $Intensity,$displayTime);
+#                $CurHash=GetHashRate();
+#            }
                 
-        }
-        while($CurHash>$OldHash);
-        $Intensity-=$diff;
-    }
+#        }
+#        while($CurHash>$OldHash);
+#        $Intensity-=$diff;
+#    }
     
     CreateUserConfig($Threads, $Intensity, 60);
 #    CreateDonationConfig($Threads, $Intensity);
@@ -479,6 +479,6 @@ do
 
     #now run xmr-stak for the donation pool 
 #    RunXMRStak($donationtime, "donationconfig.json");
-    $loopcounter--;
-}
-while($loopcounter!=0);
+#    $loopcounter--;
+#}
+#while($loopcounter!=0);
