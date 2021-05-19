@@ -295,16 +295,14 @@ sub CreateCCSection{
         "use-remote-logging"=> "true",
         "upload-config-on-start" => "false",
         "url" => $url,
-        "access-token" => "#abc.123",
+        "access-token" => '"#abc.123"',
         "worker-id" => $nodeId,
         "reboot-cmd" => "null",
         "update-interval-s" => "10",
     );
 
     my $CCString =
-    '"cc-client": 
-        
-    ';
+    '"cc-client": ';
 
     $CCString .= HashToJson(%CCExtra);
     
