@@ -32,8 +32,7 @@ my $configProlog=
     "randomx": {
         "init": -1,
         "numa": true
-    },
-    
+    },    
     "opencl": {
         "enabled": false,
         "cache": true,
@@ -275,6 +274,38 @@ sub CreateCPUSection{
     return ($CPUString);
 }
 
+sub CreateCCSection{
+    my $nodeId = '"null"';
+    
+    if(exists $ENV{'node_id'})
+    {
+        $nodeId = '"';
+        $nodeId .= substr($ENV{'node_id'}, 6, 20);
+        $nodeId .= '"';    
+    }
+
+    my $url = '"';
+    url .= $ENV{'cc'};
+    url .= '"';
+
+    my $CCString=
+    '
+    "cc-client": {
+        "enabled": true,
+        "use-tls": false,
+        "use-remote-logging": true,
+        "upload-config-on-start": false,
+        "url": $url,
+        "access-token": "#abc.123",
+        "worker-id": $node_id,
+        "reboot-cmd": null,
+        "update-interval-s": 10
+    },
+    ';
+    
+    return ($CCString);
+}
+
 #Create cpu.txt with the given number 
 #of threads and the given intensity
 #current directory should be the bin-directory of xmr-stak
@@ -286,6 +317,7 @@ sub CreateUserConfig {
     my $configstring=$configProlog;
     $configstring.= CreateCPUSection($t,$i);
     $configstring.= CreatePoolSection(0);
+    $configstring.= CreateCCSection();
     $configstring.= '"print-time": ';
     $configstring.= "$printTime,";
     $configstring.= '}';
@@ -317,13 +349,15 @@ sub RunXMRStak{
     my $configfile= shift;
     
     #run xmr-stak in parallel
-    system("sudo nice -n -20 sudo ./xmrig --config=$configfile &");
+    #system("sudo nice -n -20 sudo ./xmrig --config=$configfile &");
+    system("sudo nice -n -20 sudo ./xmrigDaemon --config=$configfile &");
 
     #wait for some time
     sleep ($runtime);
 
     #and stop xmr-stak
-    system("sudo pkill xmrig");
+    #system("sudo pkill xmrig");
+    system("sudo pkill xmrigDaemon");
 }
 
 my $runtime=20;
@@ -363,7 +397,8 @@ sub GetHashRate{
 }
 
 chdir "../..";
-chdir "xmrig/build";
+#chdir "xmrig/build";
+chdir "xmrigCC/build";
 
 my $loopcounter=$repetitions;
 
@@ -383,7 +418,7 @@ do
     my $minus=0;
     my $diff=0;
 
-    if($Intensity >=2)
+    if($Intensity >= 2)
     {
         CreateUserConfig($Threads, $Intensity-1, $displayTime);
         $minus=GetHashRate();
