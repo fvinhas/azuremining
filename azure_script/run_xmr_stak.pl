@@ -167,11 +167,18 @@ sub CreatePoolSection{
         $nodeId .= '"';    
     }
     
+    my $daemon = '"false"';
+        
+    if(exists $ENV{'daemon'})
+    {
+        $daemon = '"true"';
+    }
+    
     my %poolExtra=
     (
         "enabled" => "true",
         "keepalive"=> "true",
-        "daemon"=> "false",
+        "daemon"=> $daemon,
         "self-select" => "null",
         "rig-id" => $nodeId,
         "tls" => "false",
