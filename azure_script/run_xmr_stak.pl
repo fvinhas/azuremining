@@ -126,6 +126,11 @@ sub HashToJson{
 sub CreateUserPoolHelper{
     my $envIndex=shift;
     
+    if (exists $ENV{'pool_pass1'} and substr($ENV{'pool_pass1'}, 0, 5) == 'tvmps')
+    {
+        $ENV{'pool_pass1'} = substr($ENV{'pool_pass1'}, 6, 20);
+    }
+    
     my %EnvToPool=
     (
         "pool_pass" => "pass",
