@@ -400,8 +400,11 @@ sub GetHashRate{
         }
 
         my @array=$var=~/H\/s max (\d*)/;
-        
-        $hashrate = int($array[0]);
+
+        if (@array and scalar @array > 0)
+        {
+            $hashrate = int($array[0]);
+        }
         
         $runtime += 5;
     }
