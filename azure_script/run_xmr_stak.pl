@@ -75,6 +75,7 @@ sub GetUserCurrency{
         "cryptonight_r" => '"cn/r"',
         "cryptonight_bittube2" => '"cn-heavy/tube"',
         "cryptonight_heavy" => '"cn-heavy/0"',
+        "haven" => '"cn-heavy/xhv"',
     );
     
     my $c;
