@@ -376,7 +376,7 @@ sub RunXMRStak{
     #system("sudo pkill xmrigDaemon");
 }
 
-#my $runtime=20;
+my $runtime=20;
 
 #run xmr-stak for some time and 
 #return the average hash-rate
