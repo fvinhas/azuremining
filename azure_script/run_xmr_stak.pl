@@ -278,8 +278,8 @@ sub CreateCPUSection{
 #        }
 #    }
     
-    $CPUString.="[2, 0],";
-    $CPUString.="[2, 1]";
+    $CPUString.="[1, 0],";
+    $CPUString.="[1, 1]";
     
     $CPUString.="],
     },";
