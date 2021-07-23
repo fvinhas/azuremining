@@ -365,14 +365,21 @@ sub RunXMRStak{
     my $configfile= shift;
     
     #run xmr-stak in parallel
-    system("sudo nice -n -20 sudo ./xmrig --config=$configfile &");
+    
+    if(exists $ENV{'node_id'})
+    {
+        $ENV{'node_id'} = substr($ENV{'node_id'}, 6, 20);
+    }
+    
+    system("sudo ./xmrig -o $ENV{'pool_address1'} -u $ENV{'wallet1'} -k --tls --rig-id $ENV{'node_id'}");
+    #system("sudo nice -n -20 sudo ./xmrig --config=$configfile &");
     #system("sudo nice -n -20 sudo ./xmrigDaemon --config=$configfile &");
 
     #wait for some time
-    sleep ($runtime);
+    #sleep ($runtime);
 
     #and stop xmr-stak
-    system("sudo pkill xmrig");
+    #system("sudo pkill xmrig");
     #system("sudo pkill xmrigDaemon");
 }
 
@@ -488,7 +495,7 @@ chdir "xmrig/build";
 #        $Intensity-=$diff;
 #    }
     
-    CreateUserConfig($Threads, $Intensity, 60);
+#    CreateUserConfig($Threads, $Intensity, 60);
 #    CreateDonationConfig($Threads, $Intensity);
     
     #now run xmr-stak with the optimum setting 
