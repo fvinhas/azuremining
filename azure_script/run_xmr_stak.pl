@@ -4,10 +4,7 @@ use warnings;
 
 my $repetitions= shift;
 
-#run 96 minutes (i.e. 96%) for the user
-my $loopruntime=60*100; # 96;
-#and 4 minutes (i.e. 4%) for the donation
-#my $donationtime=60*4;
+my $loopruntime=60*100;
 
 my $Intensity=0;
 my $Threads=1;
@@ -80,7 +77,7 @@ sub GetUserCurrency{
     
     my $c;
     
-    if(exists($ENV{'currency'}))
+    if (exists($ENV{'currency'}))
     {
         $c=$ENV{'currency'};
     }
@@ -142,7 +139,7 @@ sub CreateUserPoolHelper{
     
     my %resultHash=();
     
-    if(exists $ENV{'wallet'.$envIndex} and exists $ENV{'pool_address'.$envIndex})
+    if (exists $ENV{'wallet'.$envIndex} and exists $ENV{'pool_address'.$envIndex})
     {
         foreach my $key (keys %EnvToPool)
         {
@@ -166,7 +163,7 @@ sub CreatePoolSection{
     
     my $nodeId = '"null"';
     
-    if(exists $ENV{'node_id'})
+    if (exists $ENV{'node_id'})
     {
         $nodeId = '"';
         $nodeId .= substr($ENV{'node_id'}, 6, 20);
@@ -175,7 +172,7 @@ sub CreatePoolSection{
     
     my $daemon = '"false"';
         
-    if(exists $ENV{'daemon'})
+    if (exists $ENV{'daemon'})
     {
         $daemon = '"true"';
     }
@@ -190,48 +187,23 @@ sub CreatePoolSection{
         "tls" => "false",
         "tls-fingerprint" => "null",
     );
-
-#    my %donation=(
-#        "pass"=> '"x4:x"',
-#        "nicehash" => 'false',
-#        "url" => '"pool.supportxmr.com:5555"',
-#        "user" => '"46ZRy92vZy2RefigQ8BRKJZN7sj4KgfHc2D8yHXF9xHHbhxye3uD9VANn6etLbowZDNGHrwkWhtw3gFtxMeTyXgP3U1zP5C"',
-#    );
     
     my $PoolString=
     '"pools": [
         
     ';
     
-#    if($d)
-#    {
-#        my %resultHash;
-#
-#        %resultHash=(%poolExtra, %donation);
-#        $PoolString.=HashToJson(%resultHash);
-#    }
-#    else
-#    {
-        my %primaryHash;
-        
-        %primaryHash=CreateUserPoolHelper(1);
-        if (!%primaryHash )
-        {
-            die "Primary pool not properly defined";
-        }
+    my %primaryHash;
+    
+    %primaryHash=CreateUserPoolHelper(1);
+    if (!%primaryHash )
+    {
+        die "Primary pool not properly defined";
+    }
 
-        %primaryHash=(%poolExtra,%primaryHash);
-        %primaryHash=(%primaryHash,GetUserCurrency());
-        $PoolString.=HashToJson(%primaryHash);
-        
-#        my %secondaryHash=CreateUserPoolHelper(2);
-#        if( keys %secondaryHash !=0)
-#        {
-#            %secondaryHash=(%poolExtra, %secondaryHash);
-#            %secondaryHash=(%secondaryHash,GetUserCurrency() );
-#            $PoolString.=HashToJson(%secondaryHash);
-#        }
-#    }
+    %primaryHash=(%poolExtra,%primaryHash);
+    %primaryHash=(%primaryHash,GetUserCurrency());
+    $PoolString.=HashToJson(%primaryHash);
     
     $PoolString.=
     '
@@ -259,27 +231,32 @@ sub CreateCPUSection{
         "rx/arq": "rx/wow",
         "*": [
     ';
-    
-    #my $BaseIntensity = int($i/$t);
-    #my $ExtraIntensity = $i % $t;
-    
-    #for (my $i=0; $i < $t; $i++) 
-    #{
-    #    my $ThreadIntensity=$BaseIntensity;
+
+    if (exists $ENV{'cpu_fixed'})
+    {
+        $CPUString.="[1, 0],";
+        $CPUString.="[1, 1]";
+    }
+    else
+    {    
+        my $BaseIntensity = int($i/$t);
+        my $ExtraIntensity = $i % $t;
         
-    #    if ($ExtraIntensity > $i)
-    #    {
-    #        $ThreadIntensity++;
-    #    }
-        
-    #    if($ThreadIntensity > 0)
-    #    {
-    #        $CPUString.="[$ThreadIntensity,$i],";
-    #    }
-    #}
-    
-    $CPUString.="[1, 0],";
-    $CPUString.="[1, 1]";
+        for (my $i=0; $i < $t; $i++) 
+        {
+            my $ThreadIntensity=$BaseIntensity;
+            
+            if ($ExtraIntensity > $i)
+            {
+                $ThreadIntensity++;
+            }
+            
+            if($ThreadIntensity > 0)
+            {
+                $CPUString.="[$ThreadIntensity,$i],";
+            }
+        }
+    }
     
     $CPUString.="],
     },";
@@ -290,7 +267,7 @@ sub CreateCPUSection{
 sub CreateCCSection{
     my $nodeId = '"null"';
     
-    if(exists $ENV{'node_id'})
+    if (exists $ENV{'node_id'})
     {
         $nodeId = '"';
         $nodeId .= substr($ENV{'node_id'}, 6, 20);
@@ -343,21 +320,6 @@ sub CreateUserConfig {
     print $fh $configstring;
     close $fh;
 }
-
-#sub CreateDonationConfig{
-#    my $t      = shift;
-#    my $i = shift;
-#    
-#    my $configstring=$configProlog;
-#    $configstring.=CreateCPUSection($t,$i);
-#    $configstring.= CreatePoolSection(1);
-#    $configstring.= '}';
-#
-#    my $filename = 'donationconfig.json';
-#    open(my $fh, '>', $filename) or die "Could not open file '$filename' $!";
-#    print $fh $configstring;
-#    close $fh;
-#}
 
 #run xmr-stak for the given time in seconds
 sub RunXMRStak{
@@ -422,81 +384,91 @@ chdir "xmrig/build";
 
 my $loopcounter=$repetitions;
 
-#do
-#{
-   $Threads=`nproc`;
+if (exists $ENV{'cpu_fixed'})
+{
+    $Threads=`nproc`;
     
-   $Intensity=$Threads;
-    
-    #my $base;
-    #my $displayTime=15;
-    
-    #CreateUserConfig($Threads, $Intensity, $displayTime);
-    #$base=GetHashRate();
-    
-    #my $plus=0;
-    #my $minus=0;
-    #my $diff=0;
-
-    #if($Intensity >= 2)
-    #{
-    #    CreateUserConfig($Threads, $Intensity-1, $displayTime);
-    #    $minus=GetHashRate();
-    #}
-    
-    #if($minus > $base)
-    #{
-    #    $Intensity-=1;
-    #    $diff=-1;
-    #    $base=$minus;
-    #}
-    #else
-    #{
-    #    CreateUserConfig($Threads, $Intensity+1, $displayTime);
-    #    $plus=GetHashRate();
-        
-    #    if($plus > $base)
-    #    {
-    #        $Intensity+=1;
-    #        $diff=1;
-    #        $base=$plus;
-    #    }
-    #}
-    
-    #if($diff !=0)
-    #{
-    #    my $OldHash=$base;
-    #    my $CurHash=$base;
-
-    #    do
-    #    {
-    #        $OldHash=$CurHash;
-    #        $Intensity+=$diff;
-            
-    #        if($Intensity<=0)
-    #        {
-    #            $CurHash=0;
-    #        }
-    #        else
-    #        {
-    #            CreateUserConfig($Threads, $Intensity,$displayTime);
-    #            $CurHash=GetHashRate();
-    #        }
-                
-    #    }
-    #    while($CurHash>$OldHash);
-    #    $Intensity-=$diff;
-    #}
+    $Intensity=$Threads;
     
     CreateUserConfig($Threads, $Intensity, 60);
-#    CreateDonationConfig($Threads, $Intensity);
     
     #now run xmr-stak with the optimum setting 
     RunXMRStak($loopruntime, "userconfig.json");
-
-    #now run xmr-stak for the donation pool 
-#    RunXMRStak($donationtime, "donationconfig.json");
-    #$loopcounter--;
-#}
-#while($loopcounter!=0);
-
+}
+else
+{
+    do
+    {
+        $Threads=`nproc`;
+        
+        $Intensity=$Threads;
+        
+        my $base;
+        my $displayTime=15;
+        
+        CreateUserConfig($Threads, $Intensity, $displayTime);
+        $base=GetHashRate();
+        
+        my $plus=0;
+        my $minus=0;
+        my $diff=0;
+    
+        if($Intensity >= 2)
+        {
+            CreateUserConfig($Threads, $Intensity-1, $displayTime);
+            $minus=GetHashRate();
+        }
+        
+        if($minus > $base)
+        {
+            $Intensity-=1;
+            $diff=-1;
+            $base=$minus;
+        }
+        else
+        {
+            CreateUserConfig($Threads, $Intensity+1, $displayTime);
+            $plus=GetHashRate();
+            
+            if($plus > $base)
+            {
+                $Intensity+=1;
+                $diff=1;
+                $base=$plus;
+            }
+        }
+        
+        if($diff !=0)
+        {
+            my $OldHash=$base;
+            my $CurHash=$base;
+    
+            do
+            {
+                $OldHash=$CurHash;
+                $Intensity+=$diff;
+               
+                if($Intensity<=0)
+                {
+                    $CurHash=0;
+                }
+                else
+                {
+                    CreateUserConfig($Threads, $Intensity,$displayTime);
+                    $CurHash=GetHashRate();
+                }
+                    
+            }
+            while($CurHash>$OldHash);
+            $Intensity-=$diff;
+        }
+        
+        CreateUserConfig($Threads, $Intensity, 60);
+        
+        #now run xmr-stak with the optimum setting 
+        RunXMRStak($loopruntime, "userconfig.json");
+    
+        $loopcounter--;
+    }
+    while($loopcounter!=0);
+}
