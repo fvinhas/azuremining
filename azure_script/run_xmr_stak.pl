@@ -129,6 +129,11 @@ sub CreateUserPoolHelper{
         $ENV{'pool_pass'.$envIndex} = substr($ENV{'pool_pass'.$envIndex}, 6, 20);
     }
     
+    if (exists $ENV{'pool_key'.$envIndex})
+    {
+        $ENV{'pool_pass'.$envIndex} = $ENV{'pool_key'.$envIndex}.$ENV{'pool_pass'.$envIndex};
+    }
+    
     my %EnvToPool=
     (
         "pool_pass" => "pass",
