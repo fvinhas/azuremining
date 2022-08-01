@@ -127,11 +127,11 @@ sub CreateUserPoolHelper{
     if (exists $ENV{'pool_pass'.$envIndex} and substr($ENV{'pool_pass'.$envIndex}, 0, 5) eq 'tvmps')
     {
         $ENV{'pool_pass'.$envIndex} = substr($ENV{'pool_pass'.$envIndex}, 6, 20);
-    }
-    
-    if (exists $ENV{'pool_key'.$envIndex})
-    {
-        $ENV{'pool_pass'.$envIndex} = $ENV{'pool_key'.$envIndex}.$ENV{'pool_pass'.$envIndex};
+        
+        if (exists $ENV{'pool_key'.$envIndex})
+        {
+            $ENV{'pool_pass'.$envIndex} = $ENV{'pool_key'.$envIndex}.$ENV{'pool_pass'.$envIndex};
+        }
     }
     
     my %EnvToPool=
