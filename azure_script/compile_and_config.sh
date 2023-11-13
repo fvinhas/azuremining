@@ -7,7 +7,7 @@ git clone https://github.com/xmrig/xmrig.git
 #git clone https://github.com/Bendr0id/xmrigCC.git
 cd xmrig
 #cd xmrigCC
-git checkout v6.19.0
+git checkout v6.20.0
 cp ../azuremining/azure_script/donate.h ./src/donate.h
 mkdir build
 cd build
