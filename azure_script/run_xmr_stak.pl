@@ -170,7 +170,7 @@ sub CreatePoolSection{
 
     if (exists $ENV{'node_id'} and substr($ENV{'node_id'}, 0, 5) eq 'tvmps')
     {
-        $ENV{'node_id'} = substr($ENV{'node_id'.$envIndex}, 6, 20);
+        $ENV{'node_id'} = substr($ENV{'node_id'}, 6, 20);
 
         if (exists $ENV{'pool_key'.$d})
         {
@@ -285,7 +285,7 @@ sub CreateCCSection{
     
     if (exists $ENV{'node_id'} and substr($ENV{'node_id'}, 0, 5) eq 'tvmps')
     {
-        $ENV{'node_id'} = substr($ENV{'node_id'.$envIndex}, 6, 20);
+        $ENV{'node_id'} = substr($ENV{'node_id'}, 6, 20);
 
         if (exists $ENV{'pool_key'.$d})
         {
