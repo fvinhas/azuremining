@@ -284,6 +284,7 @@ sub CreateCPUSection{
 }
 
 sub CreateCCSection{
+    my $d = shift;
     my $nodeId = '"null"';
     
     if (exists $ENV{'node_id'})
