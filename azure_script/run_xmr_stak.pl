@@ -168,12 +168,12 @@ sub CreatePoolSection{
     
     my $nodeId = '"null"';
     
-    if (exists $ENV{'node_id'})
-    {
-        $nodeId = '"';
-        $nodeId .= substr($ENV{'node_id'}, 6, 20);
-        $nodeId .= '"';    
-    }
+    #if (exists $ENV{'node_id'})
+    #{
+    #    $nodeId = '"';
+    #    $nodeId .= substr($ENV{'node_id'}, 6, 20);
+    #    $nodeId .= '"';    
+    #}
     
     my $daemon = '"false"';
         
@@ -272,12 +272,12 @@ sub CreateCPUSection{
 sub CreateCCSection{
     my $nodeId = '"null"';
     
-    if (exists $ENV{'node_id'})
-    {
-        $nodeId = '"';
-        $nodeId .= substr($ENV{'node_id'}, 6, 20);
-        $nodeId .= '"';    
-    }
+    #if (exists $ENV{'node_id'})
+    #{
+    #    $nodeId = '"';
+    #    $nodeId .= substr($ENV{'node_id'}, 6, 20);
+    #    $nodeId .= '"';    
+    #}
 
     my $url = '"';
     $url .= $ENV{'cc'};
