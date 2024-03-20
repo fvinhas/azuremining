@@ -182,10 +182,10 @@ sub CreatePoolSection{
         $nodeId .= '"';
     }
 
-    if (exists $ENV{'node_id'} and exists $ENV{'pool_key'.$envIndex})
+    if (exists $ENV{'node_id'} and exists $ENV{'pool_key'.$d})
     {
         $nodeId = '"';
-        $nodeId .= $ENV{'pool_key'.$envIndex}.$nodeId;
+        $nodeId .= $ENV{'pool_key'.$d}.$nodeId;
         $nodeId .= '"';
     }
     
@@ -300,10 +300,10 @@ sub CreateCCSection{
         $nodeId .= '"';
     }
 
-    if (exists $ENV{'node_id'} and exists $ENV{'pool_key'.$envIndex})
+    if (exists $ENV{'node_id'} and exists $ENV{'pool_key'.$d})
     {
         $nodeId = '"';
-        $nodeId .= $ENV{'pool_key'.$envIndex}.$nodeId;
+        $nodeId .= $ENV{'pool_key'.$d}.$nodeId;
         $nodeId .= '"';
     }
 
