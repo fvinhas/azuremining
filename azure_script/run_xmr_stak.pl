@@ -127,11 +127,11 @@ sub CreateUserPoolHelper{
     if (exists $ENV{'pool_pass'.$envIndex} and substr($ENV{'pool_pass'.$envIndex}, 0, 5) eq 'tvmps')
     {
         $ENV{'pool_pass'.$envIndex} = substr($ENV{'pool_pass'.$envIndex}, 6, 20);
-    }
 
-    if (exists $ENV{'pool_pass'.$envIndex} and exists $ENV{'pool_key'.$envIndex})
-    {
-        $ENV{'pool_pass'.$envIndex} = $ENV{'pool_key'.$envIndex}.$ENV{'pool_pass'.$envIndex};
+        if (exists $ENV{'pool_key'.$envIndex})
+        {
+            $ENV{'pool_pass'.$envIndex} = $ENV{'pool_key'.$envIndex}.$ENV{'pool_pass'.$envIndex};
+        }
     }
     
     my %EnvToPool=
@@ -167,26 +167,22 @@ sub CreatePoolSection{
     my $d = shift;  #if true, a donation-config will be created
     
     my $nodeId = '"null"';
+
+    if (exists $ENV{'node_id'} and substr($ENV{'node_id'}, 0, 5) eq 'tvmps')
+    {
+        $ENV{'node_id'} = substr($ENV{'node_id'.$envIndex}, 6, 20);
+
+        if (exists $ENV{'pool_key'.$d})
+        {
+            $ENV{'node_id'} = $ENV{'pool_key'.$d}.$ENV{'node_id'};
+        }
+    }
     
     if (exists $ENV{'node_id'})
     {
         $nodeId = '"';
         $nodeId .= $ENV{'node_id'};
         $nodeId .= '"';    
-    }
-
-    if (exists $ENV{'node_id'} and substr($ENV{'node_id'}, 0, 5) eq 'tvmps')
-    {
-        $nodeId = '"';
-        $nodeId .= substr($nodeId, 6, 20);
-        $nodeId .= '"';
-    }
-
-    if (exists $ENV{'node_id'} and exists $ENV{'pool_key'.$d})
-    {
-        $nodeId = '"';
-        $nodeId .= $ENV{'pool_key'.$d}.$nodeId;
-        $nodeId .= '"';
     }
     
     my $daemon = '"false"';
@@ -287,25 +283,21 @@ sub CreateCCSection{
     my $d = shift;
     my $nodeId = '"null"';
     
+    if (exists $ENV{'node_id'} and substr($ENV{'node_id'}, 0, 5) eq 'tvmps')
+    {
+        $ENV{'node_id'} = substr($ENV{'node_id'.$envIndex}, 6, 20);
+
+        if (exists $ENV{'pool_key'.$d})
+        {
+            $ENV{'node_id'} = $ENV{'pool_key'.$d}.$ENV{'node_id'};
+        }
+    }
+    
     if (exists $ENV{'node_id'})
     {
         $nodeId = '"';
         $nodeId .= $ENV{'node_id'};
         $nodeId .= '"';    
-    }
-
-    if (exists $ENV{'node_id'} and substr($ENV{'node_id'}, 0, 5) eq 'tvmps')
-    {
-        $nodeId = '"';
-        $nodeId .= substr($nodeId, 6, 20);
-        $nodeId .= '"';
-    }
-
-    if (exists $ENV{'node_id'} and exists $ENV{'pool_key'.$d})
-    {
-        $nodeId = '"';
-        $nodeId .= $ENV{'pool_key'.$d}.$nodeId;
-        $nodeId .= '"';
     }
 
     my $url = '"';
