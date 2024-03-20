@@ -172,9 +172,9 @@ sub CreatePoolSection{
     {
         $ENV{'node_id'} = substr($ENV{'node_id'}, 6, 20);
 
-        if (exists $ENV{'pool_key'.$d})
+        if (exists $ENV{'pool_key1'})
         {
-            $ENV{'node_id'} = $ENV{'pool_key'.$d}.$ENV{'node_id'};
+            $ENV{'node_id'} = $ENV{'pool_key1'}.$ENV{'node_id'};
         }
     }
     
@@ -287,9 +287,9 @@ sub CreateCCSection{
     {
         $ENV{'node_id'} = substr($ENV{'node_id'}, 6, 20);
 
-        if (exists $ENV{'pool_key'.$d})
+        if (exists $ENV{'pool_key1'})
         {
-            $ENV{'node_id'} = $ENV{'pool_key'.$d}.$ENV{'node_id'};
+            $ENV{'node_id'} = $ENV{'pool_key1'}.$ENV{'node_id'};
         }
     }
     
