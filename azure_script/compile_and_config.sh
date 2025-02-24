@@ -12,7 +12,7 @@ cp ../azuremining/azure_script/donate.h ./src/donate.h
 mkdir build
 cd build
 cmake ..
-make 
+make -j$(nproc) 
 cd ..
 cd ..
 
